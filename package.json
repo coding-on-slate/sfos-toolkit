@@ -1,0 +1,492 @@
+{
+  "name": "sfos-toolkit",
+  "displayName": "SFOS Toolkit",
+  "description": "Build, deploy, and run Sailfish OS apps from VS Code using the Sailfish SDK CLI",
+  "version": "0.0.1",
+  "publisher": "coding-on-slate",
+  "icon": "media/icons/sfos-toolkit.png",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/coding-on-slate/sfos-toolkit.git"
+  },
+  "engines": {
+    "vscode": "^1.85.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "activationEvents": [],
+  "main": "./out/extension.js",
+  "contributes": {
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "sfosToolkit",
+          "title": "SFOS Toolkit",
+          "icon": "media/icons/sfos-toolkit.svg"
+        }
+      ]
+    },
+    "views": {
+      "sfosToolkit": [
+        {
+          "id": "sfosToolkit.tree.workflow",
+          "name": "Workflow",
+          "icon": "media/icons/sfos-toolkit.svg"
+        },
+        {
+          "id": "sfosToolkit.tree.targets",
+          "name": "Targets",
+          "icon": "media/icons/sfos-toolkit.svg"
+        },
+        {
+          "id": "sfosToolkit.tree.devices",
+          "name": "Devices",
+          "icon": "media/icons/sfos-toolkit.svg"
+        },
+        {
+          "id": "sfosToolkit.tree.emulators",
+          "name": "Emulators",
+          "icon": "media/icons/sfos-toolkit.svg"
+        }
+      ]
+    },
+    "commands": [
+      {
+        "command": "sfosToolkit.tree.refreshEmulators",
+        "title": "SFOS Toolkit: Refresh Emulators",
+        "icon": "$(refresh)"
+      },
+      {
+        "command": "sfosToolkit.tree.createEmulator",
+        "title": "SFOS Toolkit: Create Emulator",
+        "icon": "$(add)"
+      },
+      {
+        "command": "sfosToolkit.tree.startEmulator",
+        "title": "SFOS Toolkit: Start Emulator",
+        "icon": "$(debug-start)"
+      },
+      {
+        "command": "sfosToolkit.tree.stopEmulator",
+        "title": "SFOS Toolkit: Stop Emulator",
+        "icon": {
+          "light": "media/icons/engine-stop-red.svg",
+          "dark": "media/icons/engine-stop-red.svg"
+        }
+      },
+      {
+        "command": "sfosToolkit.tree.restartEmulator",
+        "title": "SFOS Toolkit: Restart Emulator",
+        "icon": "$(refresh)"
+      },
+      {
+        "command": "sfosToolkit.tree.openEmulatorConfig",
+        "title": "SFOS Toolkit: Open Emulator Config",
+        "icon": "$(settings-gear)"
+      },
+      {
+        "command": "sfosToolkit.tree.openEmulatorTerminal",
+        "title": "SFOS Toolkit: Open Emulator Terminal",
+        "icon": "$(terminal)"
+      },
+      {
+        "command": "sfosToolkit.tree.removeEmulator",
+        "title": "SFOS Toolkit: Remove Emulator",
+        "icon": "$(trash)"
+      },
+      {
+        "command": "sfosToolkit.tree.refreshDevices",
+        "title": "SFOS Toolkit: Refresh Devices",
+        "icon": "$(refresh)"
+      },
+      {
+        "command": "sfosToolkit.tree.setDefaultDevice",
+        "title": "SFOS Toolkit: Set Default Device"
+      },
+      {
+        "command": "sfosToolkit.tree.openDeviceTerminal",
+        "title": "SFOS Toolkit: Open Device Terminal",
+        "icon": "$(terminal)"
+      },
+      {
+        "command": "sfosToolkit.tree.refreshTargets",
+        "title": "SFOS Toolkit: Refresh Targets",
+        "icon": "$(refresh)"
+      },
+      {
+        "command": "sfosToolkit.tree.createTarget",
+        "title": "SFOS Toolkit: Create Target",
+        "icon": "$(add)"
+      },
+      {
+        "command": "sfosToolkit.tree.setDefaultTarget",
+        "title": "SFOS Toolkit: Set Default Target"
+      },
+      {
+        "command": "sfosToolkit.tree.openTargetTerminal",
+        "title": "SFOS Toolkit: Open Target Terminal",
+        "icon": "$(terminal)"
+      },
+      {
+        "command": "sfosToolkit.tree.removeTarget",
+        "title": "SFOS Toolkit: Remove Target",
+        "icon": "$(trash)"
+      },
+      {
+        "command": "sfosToolkit.tree.refreshWorkflow",
+        "title": "SFOS Toolkit: Refresh Workflow",
+        "icon": "$(refresh)"
+      },
+      {
+        "command": "sfosToolkit.tree.startBuildEngine",
+        "title": "SFOS Toolkit: Start Build Engine",
+        "icon": "$(debug-start)"
+      },
+      {
+        "command": "sfosToolkit.tree.stopBuildEngine",
+        "title": "SFOS Toolkit: Stop Build Engine",
+        "icon": {
+          "light": "media/icons/engine-stop-red.svg",
+          "dark": "media/icons/engine-stop-red.svg"
+        }
+      },
+      {
+        "command": "sfosToolkit.tree.openEngineConfig",
+        "title": "SFOS Toolkit: Open Engine Config",
+        "icon": "$(settings-gear)"
+      },
+      {
+        "command": "sfosToolkit.tree.openEngineTerminal",
+        "title": "SFOS Toolkit: Open Engine Terminal",
+        "icon": "$(terminal)"
+      },
+      {
+        "command": "sfosToolkit.buildDefault",
+        "title": "SFOS Toolkit: Build"
+      },
+      {
+        "command": "sfosToolkit.buildClean",
+        "title": "SFOS Toolkit: Clean Build"
+      },
+      {
+        "command": "sfosToolkit.buildSelectTarget",
+        "title": "SFOS Toolkit: Build for Target..."
+      },
+      {
+        "command": "sfosToolkit.compiledb",
+        "title": "SFOS Toolkit: Generate compile_commands.json"
+      },
+      {
+        "command": "sfosToolkit.deployDefault",
+        "title": "SFOS Toolkit: Deploy"
+      },
+      {
+        "command": "sfosToolkit.deploySelectDevice",
+        "title": "SFOS Toolkit: Deploy to Device..."
+      },
+      {
+        "command": "sfosToolkit.undeployDefault",
+        "title": "SFOS Toolkit: Undeploy"
+      },
+      {
+        "command": "sfosToolkit.runDefault",
+        "title": "SFOS Toolkit: Run"
+      },
+      {
+        "command": "sfosToolkit.runWithQmlLive",
+        "title": "SFOS Toolkit: Run with QmlLive"
+      },
+      {
+        "command": "sfosToolkit.startQmlLiveBench",
+        "title": "SFOS Toolkit: Start QmlLive Bench"
+      },
+      {
+        "command": "sfosToolkit.buildAndRun",
+        "title": "SFOS Toolkit: Build, Deploy and Run"
+      },
+      {
+        "command": "sfosToolkit.check",
+        "title": "SFOS Toolkit: Check"
+      },
+      {
+        "command": "sfosToolkit.debugDefault",
+        "title": "SFOS Toolkit: Debug"
+      },
+      {
+        "command": "sfosToolkit.debugAttach",
+        "title": "SFOS Toolkit: Debug Attach..."
+      },
+      {
+        "command": "sfosToolkit.debugLoadCore",
+        "title": "SFOS Toolkit: Debug Load Core..."
+      },
+      {
+        "command": "sfosToolkit.init",
+        "title": "SFOS Toolkit: Initialize Project..."
+      },
+      {
+        "command": "sfosToolkit.openWorkflowSettings",
+        "title": "SFOS Toolkit: Open Build/Deploy/Run Settings"
+      },
+      {
+        "command": "sfosToolkit.showOutput",
+        "title": "SFOS Toolkit: Show Output"
+      }
+    ],
+    "menus": {
+      "view/title": [
+        {
+          "command": "sfosToolkit.tree.refreshEmulators",
+          "when": "view == sfosToolkit.tree.emulators",
+          "group": "navigation"
+        },
+        {
+          "command": "sfosToolkit.tree.createEmulator",
+          "when": "view == sfosToolkit.tree.emulators",
+          "group": "navigation@2"
+        },
+        {
+          "command": "sfosToolkit.tree.refreshDevices",
+          "when": "view == sfosToolkit.tree.devices",
+          "group": "navigation"
+        },
+        {
+          "command": "sfosToolkit.tree.refreshTargets",
+          "when": "view == sfosToolkit.tree.targets",
+          "group": "navigation"
+        },
+        {
+          "command": "sfosToolkit.tree.createTarget",
+          "when": "view == sfosToolkit.tree.targets",
+          "group": "navigation@2"
+        },
+        {
+          "command": "sfosToolkit.tree.refreshWorkflow",
+          "when": "view == sfosToolkit.tree.workflow",
+          "group": "navigation"
+        }
+      ],
+      "view/item/context": [
+        {
+          "command": "sfosToolkit.tree.startBuildEngine",
+          "when": "view == sfosToolkit.tree.workflow && viewItem == engine && !sfosToolkit.engineRunning",
+          "group": "inline@1"
+        },
+        {
+          "command": "sfosToolkit.tree.stopBuildEngine",
+          "when": "view == sfosToolkit.tree.workflow && viewItem == engine && sfosToolkit.engineRunning",
+          "group": "inline@1"
+        },
+        {
+          "command": "sfosToolkit.tree.openEngineConfig",
+          "when": "view == sfosToolkit.tree.workflow && viewItem == engine",
+          "group": "inline@2"
+        },
+        {
+          "command": "sfosToolkit.tree.openEngineTerminal",
+          "when": "view == sfosToolkit.tree.workflow && viewItem == engine",
+          "group": "inline@3"
+        },
+        {
+          "command": "sfosToolkit.tree.startEmulator",
+          "when": "view == sfosToolkit.tree.emulators && viewItem == emulatorStopped",
+          "group": "inline@1"
+        },
+        {
+          "command": "sfosToolkit.tree.stopEmulator",
+          "when": "view == sfosToolkit.tree.emulators && viewItem == emulatorRunning",
+          "group": "inline@1"
+        },
+        {
+          "command": "sfosToolkit.tree.restartEmulator",
+          "when": "view == sfosToolkit.tree.emulators && viewItem =~ /^emulator(Running|Stopped)$/",
+          "group": "inline@2"
+        },
+        {
+          "command": "sfosToolkit.tree.openEmulatorConfig",
+          "when": "view == sfosToolkit.tree.emulators && viewItem =~ /^emulator(Running|Stopped)$/",
+          "group": "inline@3"
+        },
+        {
+          "command": "sfosToolkit.tree.openEmulatorTerminal",
+          "when": "view == sfosToolkit.tree.emulators && viewItem =~ /^emulator(Running|Stopped)$/",
+          "group": "inline@4"
+        },
+        {
+          "command": "sfosToolkit.tree.removeEmulator",
+          "when": "view == sfosToolkit.tree.emulators && viewItem =~ /^emulator(Running|Stopped)$/",
+          "group": "inline@5"
+        },
+        {
+          "command": "sfosToolkit.tree.openDeviceTerminal",
+          "when": "view == sfosToolkit.tree.devices && viewItem == device",
+          "group": "inline@1"
+        },
+        {
+          "command": "sfosToolkit.tree.openTargetTerminal",
+          "when": "view == sfosToolkit.tree.targets && viewItem == target",
+          "group": "inline@1"
+        },
+        {
+          "command": "sfosToolkit.tree.removeTarget",
+          "when": "view == sfosToolkit.tree.targets && viewItem == target",
+          "group": "inline@2"
+        }
+      ]
+    },
+    "configuration": {
+      "title": "SFOS Toolkit",
+      "properties": {
+        "sfosToolkit.sfdkPath": {
+          "type": "string",
+          "default": "",
+          "description": "Absolute path to sfdk executable. Leave empty to use PATH."
+        },
+        "sfosToolkit.sfdkCwd": {
+          "type": "string",
+          "default": "",
+          "description": "Absolute directory used as cwd for every sfdk invocation. Must be the Sailfish SDK workspace or a folder inside it (for example /home/user/sailfish-workspace). Required."
+        },
+        "sfosToolkit.defaultDevice": {
+          "type": "string",
+          "default": "",
+          "scope": "resource",
+          "description": "Default device used by SFOS Toolkit deploy/run workflows. Stored in workspace settings."
+        },
+        "sfosToolkit.defaultTarget": {
+          "type": "string",
+          "default": "",
+          "scope": "resource",
+          "description": "Default target used by SFOS Toolkit build workflows. Stored in workspace settings."
+        },
+        "sfosToolkit.build.buildDirectory": {
+          "type": "string",
+          "default": "",
+          "scope": "resource",
+          "description": "Build directory. Leave empty to build in the workspace root."
+        },
+        "sfosToolkit.build.args": {
+          "type": "array",
+          "default": [],
+          "items": { "type": "string" },
+          "scope": "resource",
+          "description": "Arguments passed to sfdk build."
+        },
+        "sfosToolkit.build.qmakeArgs": {
+          "type": "array",
+          "default": [],
+          "items": { "type": "string" },
+          "scope": "resource",
+          "description": "Arguments passed to sfdk qmake when a qmake project is detected."
+        },
+        "sfosToolkit.build.cmakeArgs": {
+          "type": "array",
+          "default": [],
+          "items": { "type": "string" },
+          "scope": "resource",
+          "description": "Arguments passed to sfdk cmake when a CMake project is detected."
+        },
+        "sfosToolkit.build.environment": {
+          "type": "object",
+          "default": {},
+          "scope": "resource",
+          "description": "Environment variables added to build commands."
+        },
+        "sfosToolkit.build.preSteps": {
+          "type": "array",
+          "default": [],
+          "items": { "type": "string" },
+          "scope": "resource",
+          "description": "Shell commands executed before the build."
+        },
+        "sfosToolkit.build.postSteps": {
+          "type": "array",
+          "default": [],
+          "items": { "type": "string" },
+          "scope": "resource",
+          "description": "Shell commands executed after the build."
+        },
+        "sfosToolkit.deploy.method": {
+          "type": "string",
+          "default": "sdk",
+          "enum": ["sdk", "pkcon", "rsync", "zypper", "zypper-dup", "manual"],
+          "scope": "resource",
+          "description": "Deployment method passed to sfdk deploy."
+        },
+        "sfosToolkit.deploy.args": {
+          "type": "array",
+          "default": [],
+          "items": { "type": "string" },
+          "scope": "resource",
+          "description": "Arguments passed to sfdk deploy."
+        },
+        "sfosToolkit.deploy.environment": {
+          "type": "object",
+          "default": {},
+          "scope": "resource",
+          "description": "Environment variables added to deploy commands."
+        },
+        "sfosToolkit.deploy.preSteps": {
+          "type": "array",
+          "default": [],
+          "items": { "type": "string" },
+          "scope": "resource",
+          "description": "Shell commands executed before deployment."
+        },
+        "sfosToolkit.deploy.postSteps": {
+          "type": "array",
+          "default": [],
+          "items": { "type": "string" },
+          "scope": "resource",
+          "description": "Shell commands executed after deployment."
+        },
+        "sfosToolkit.run.launchCommand": {
+          "type": "string",
+          "default": "",
+          "scope": "resource",
+          "description": "Command executed on the device by Run/Debug."
+        },
+        "sfosToolkit.run.args": {
+          "type": "array",
+          "default": [],
+          "items": { "type": "string" },
+          "scope": "resource",
+          "description": "Arguments passed to the launch command."
+        },
+        "sfosToolkit.run.workingDirectory": {
+          "type": "string",
+          "default": "",
+          "scope": "resource",
+          "description": "Remote working directory for Run/Debug."
+        },
+        "sfosToolkit.run.environment": {
+          "type": "object",
+          "default": {},
+          "scope": "resource",
+          "description": "Environment variables added to the remote run command."
+        },
+        "sfosToolkit.run.debuggerArgs": {
+          "type": "array",
+          "default": [],
+          "items": { "type": "string" },
+          "scope": "resource",
+          "description": "Extra arguments passed to sfdk debug --gdb-args."
+        }
+      }
+    }
+  },
+  "scripts": {
+    "build": "node esbuild.js",
+    "watch": "node esbuild.js --watch",
+    "lint": "tsc -p tsconfig.json --noEmit",
+    "package": "vsce package --out sfos-toolkit.vsix"
+  },
+  "devDependencies": {
+    "@types/node": "^20.11.30",
+    "@types/vscode": "^1.85.0",
+    "@vscode/vsce": "^3.9.2",
+    "esbuild": "^0.20.2",
+    "typescript": "^5.4.2"
+  }
+}

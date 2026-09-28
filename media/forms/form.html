@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'none'; script-src {{cspSource}}; style-src {{cspSource}};"
+    />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SFOS Form</title>
+    <link rel="stylesheet" href="{{styleUri}}" />
+  </head>
+  <body>
+    <div class="toolbar">
+      <span id="title" class="title"></span>
+    </div>
+    <div id="status" class="status"></div>
+    <div id="form" class="form"></div>
+    <script src="{{scriptUri}}"></script>
+  </body>
+</html>

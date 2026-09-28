@@ -1,0 +1,35 @@
+name: Package extension
+
+on:
+  push:
+    branches: [main]
+
+permissions:
+  contents: write
+
+jobs:
+  package:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/setup-node@v6
+        with:
+          node-version: "24"
+          cache: npm
+
+      - run: npm ci
+      - run: npm run build
+      - run: npm run package
+
+      - uses: actions/upload-artifact@v6
+        with:
+          name: sfos-toolkit
+          path: sfos-toolkit.vsix
+
+      - uses: softprops/action-gh-release@v3
+        with:
+          tag_name: v${{ github.run_number }}
+          name: Build ${{ github.run_number }}
+          files: sfos-toolkit.vsix
+          generate_release_notes: true
