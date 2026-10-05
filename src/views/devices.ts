@@ -27,11 +27,11 @@ export class DevicesTreeProvider
     const item = new vscode.TreeItem(element.name, vscode.TreeItemCollapsibleState.None);
     item.id = `device:${element.name}`;
     item.contextValue = "device";
-    item.description = isDefault ? "default" : "";
+    item.description = isDefault ? "selected" : "";
     item.iconPath = new vscode.ThemeIcon("device-mobile");
     item.command = {
       command: "sfosToolkit.tree.setDefaultDevice",
-      title: "Set Default Device",
+      title: "Set Selected Device",
       arguments: [element]
     };
     return item;
@@ -49,8 +49,13 @@ export class DevicesTreeProvider
       },
       async () => {
         try {
-          this.defaultDevice = getWorkspaceConfig("defaultDevice");
           this.devices = (await listDevices(this.sfdk)).map((name) => ({ name }));
+          this.defaultDevice = getWorkspaceConfig("defaultDevice");
+          const names = this.devices.map((device) => device.name);
+          if (names.length > 0 && (!this.defaultDevice || !names.includes(this.defaultDevice))) {
+            this.defaultDevice = names[0];
+            await setWorkspaceConfig("defaultDevice", this.defaultDevice);
+          }
           this.onDidChangeTreeDataEmitter.fire(undefined);
         } catch (error) {
           const message = error instanceof Error ? error.message : String(error);
@@ -68,7 +73,7 @@ export class DevicesTreeProvider
     await setWorkspaceConfig("defaultDevice", node.name);
     this.defaultDevice = node.name;
     this.onDidChangeTreeDataEmitter.fire(undefined);
-    void vscode.window.showInformationMessage(`Default deploy device set to ${node.name}.`);
+    void vscode.window.showInformationMessage(`Selected device set to ${node.name}.`);
   }
 
   openTerminal(node: DeviceNode | undefined): void {

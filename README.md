@@ -13,7 +13,7 @@ It is **not** Sailfish IDE. It does not replace Qt Creator, install the SDK, or 
 ## Features
 
 - **Workflow** — **Build** (engine, build, clean build, `compile_commands.json`, check, init), **Run** (deploy, undeploy, run, QmlLive), and **Debug** (GDB in a terminal: start / attach / load core)
-- **Targets, devices, emulators** — list, default target/device, start/stop emulator, terminals, config
+- **Targets, devices, emulators** — list, selected target/device, start/stop emulator, terminals, config
 
 Set `sfosToolkit.sfdkPath` if `sfdk` is not on PATH, and `sfosToolkit.sfdkCwd` to your SDK workspace (absolute path).
 

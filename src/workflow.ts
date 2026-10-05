@@ -240,6 +240,19 @@ export class ProjectWorkflow {
     message: string
   ): Promise<void> {
     const { cwd } = await buildContext(folder, readBuildSettings(folder).buildDirectory);
+    const device = getWorkspaceConfig("defaultDevice");
+    if (!device) {
+      void vscode.window.showErrorMessage(
+        "No default device set. Choose a device in the Devices view, then try Debug again."
+      );
+      return;
+    }
+    const commandArgs: string[] = ["-c", `device=${device}`];
+    const target = getWorkspaceConfig("defaultTarget");
+    if (target) {
+      commandArgs.push("-c", `target=${target}`);
+    }
+    commandArgs.push(...args);
     const terminal = vscode.window.createTerminal({
       name: "SFOS Debug",
       cwd,
@@ -247,7 +260,7 @@ export class ProjectWorkflow {
     });
     terminal.show();
     terminal.sendText(
-      `${quoteForShell(this.sfdk.commandPath())} ${args.map(quoteForShell).join(" ")}`
+      `${quoteForShell(this.sfdk.commandPath())} ${commandArgs.map(quoteForShell).join(" ")}`
     );
   }
 

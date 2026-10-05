@@ -32,11 +32,11 @@ export class TargetsTreeProvider
     const item = new vscode.TreeItem(element.name, vscode.TreeItemCollapsibleState.None);
     item.id = `target:${element.name}`;
     item.contextValue = "target";
-    item.description = isDefault ? "default" : "";
+    item.description = isDefault ? "selected" : "";
     item.iconPath = new vscode.ThemeIcon("package");
     item.command = {
       command: "sfosToolkit.tree.setDefaultTarget",
-      title: "Set Default Target",
+      title: "Set Selected Target",
       arguments: [element]
     };
     return item;
@@ -48,8 +48,13 @@ export class TargetsTreeProvider
 
   async refresh(): Promise<void> {
     await this.withProgress("Refreshing targets", async () => {
-      this.defaultTarget = getWorkspaceConfig("defaultTarget");
       this.targets = (await listTargets(this.sfdk)).map((name) => ({ name }));
+      this.defaultTarget = getWorkspaceConfig("defaultTarget");
+      const names = this.targets.map((target) => target.name);
+      if (names.length > 0 && (!this.defaultTarget || !names.includes(this.defaultTarget))) {
+        this.defaultTarget = names[0];
+        await setWorkspaceConfig("defaultTarget", this.defaultTarget);
+      }
       this.onDidChangeTreeDataEmitter.fire(undefined);
     });
   }
@@ -62,7 +67,7 @@ export class TargetsTreeProvider
     await setWorkspaceConfig("defaultTarget", node.name);
     this.defaultTarget = node.name;
     this.onDidChangeTreeDataEmitter.fire(undefined);
-    void vscode.window.showInformationMessage(`Default target set to ${node.name}.`);
+    void vscode.window.showInformationMessage(`Selected target set to ${node.name}.`);
   }
 
   async create(): Promise<void> {
