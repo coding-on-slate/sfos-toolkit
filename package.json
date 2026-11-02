@@ -2,7 +2,7 @@
   "name": "sfos-toolkit",
   "displayName": "SFOS Toolkit",
   "description": "Build, deploy, and run Sailfish OS apps from VS Code using the Sailfish SDK CLI",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "publisher": "coding-on-slate",
   "icon": "media/icons/sfos-toolkit.png",
   "repository": {

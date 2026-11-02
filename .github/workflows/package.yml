@@ -11,25 +11,36 @@ jobs:
   package:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v4
 
-      - uses: actions/setup-node@v6
+      - uses: actions/setup-node@v4
         with:
           node-version: "24"
           cache: npm
 
       - run: npm ci
       - run: npm run build
+      
+      # 1. Automatically bundle the vsix. vsce names it as: publisher-name-version.vsix
       - run: npm run package
 
-      - uses: actions/upload-artifact@v6
-        with:
-          name: sfos-toolkit
-          path: sfos-toolkit.vsix
+      # 2. Extract the exact version from package.json and save it to the GitHub Env
+      - name: Extract extension version
+        id: get_version
+        run: |
+          VERSION=$(node -p "require('./package.json').version")
+          echo "EXT_VERSION=$VERSION" >> $GITHUB_ENV
 
-      - uses: softprops/action-gh-release@v3
+      # 3. Upload the artifact using a wildcard to match whatever vsce named it
+      - uses: actions/upload-artifact@v4
         with:
-          tag_name: v${{ github.run_number }}
-          name: Build ${{ github.run_number }}
-          files: sfos-toolkit.vsix
+          name: sfos-toolkit-v${{ env.EXT_VERSION }}
+          path: "*.vsix"
+
+      # 4. Create a clean release tagged with the version and using the true vsix name
+      - uses: softprops/action-gh-release@v2
+        with:
+          tag_name: v${{ env.EXT_VERSION }}
+          name: Version ${{ env.EXT_VERSION }}
+          files: "*.vsix"
           generate_release_notes: true
