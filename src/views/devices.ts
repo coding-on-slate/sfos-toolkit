@@ -1,7 +1,7 @@
 import * as vscode from "vscode";
 import { listDevices } from "../sfdk/devices";
 import { SfdkClient } from "../sfdk/sfdk";
-import { getWorkspaceConfig, setWorkspaceConfig } from "../workspaceConfig";
+import { getWorkspaceConfig, persistWorkspaceDefault, setWorkspaceConfig } from "../workspaceConfig";
 import { TREE_VIEW_IDS } from "./views";
 
 export type DeviceNode = {
@@ -54,7 +54,7 @@ export class DevicesTreeProvider
           const names = this.devices.map((device) => device.name);
           if (names.length > 0 && (!this.defaultDevice || !names.includes(this.defaultDevice))) {
             this.defaultDevice = names[0];
-            await setWorkspaceConfig("defaultDevice", this.defaultDevice);
+            await persistWorkspaceDefault("defaultDevice", this.defaultDevice);
           }
           this.onDidChangeTreeDataEmitter.fire(undefined);
         } catch (error) {

@@ -1,3 +1,5 @@
+import * as fs from "fs/promises";
+import * as path from "path";
 import * as vscode from "vscode";
 
 export function getWorkspaceConfig(key: string): string | null {
@@ -18,6 +20,46 @@ export async function setWorkspaceConfig(key: string, value: string | null): Pro
   await vscode.workspace
     .getConfiguration("sfosToolkit", folder.uri)
     .update(key, value ?? "", vscode.ConfigurationTarget.WorkspaceFolder);
+}
+
+/** Persist a default only if this folder is a Sailfish project or already has workspace settings. */
+export async function persistWorkspaceDefault(key: string, value: string): Promise<void> {
+  const folder = workspaceFolder();
+  if (!folder) {
+    return;
+  }
+
+  const inspected = vscode.workspace.getConfiguration("sfosToolkit", folder.uri).inspect<string>(key);
+  const workspaceValue = inspected?.workspaceFolderValue?.trim() ?? "";
+  if (workspaceValue === value) {
+    return;
+  }
+  if (!workspaceValue && !(await looksLikeSailfishProject(folder))) {
+    return;
+  }
+
+  await setWorkspaceConfig(key, value);
+}
+
+export async function looksLikeSailfishProject(
+  folder: vscode.WorkspaceFolder | undefined = workspaceFolder()
+): Promise<boolean> {
+  if (!folder) {
+    return false;
+  }
+
+  const root = folder.uri.fsPath;
+  const entries = await fs.readdir(root).catch((): string[] => []);
+  if (!entries.includes("rpm") || !entries.includes("qml")) {
+    return false;
+  }
+
+  if (entries.some((entry) => entry.endsWith(".desktop") || entry.endsWith(".spec"))) {
+    return true;
+  }
+
+  const rpmEntries = await fs.readdir(path.join(root, "rpm")).catch((): string[] => []);
+  return rpmEntries.some((entry) => entry.endsWith(".spec") || entry.endsWith(".desktop"));
 }
 
 export function workspaceFolder(): vscode.WorkspaceFolder | undefined {

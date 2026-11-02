@@ -6,7 +6,7 @@ import {
   removeTarget
 } from "../sfdk/targets";
 import { SfdkClient } from "../sfdk/sfdk";
-import { getWorkspaceConfig, setWorkspaceConfig } from "../workspaceConfig";
+import { getWorkspaceConfig, persistWorkspaceDefault, setWorkspaceConfig } from "../workspaceConfig";
 import { TREE_VIEW_IDS } from "./views";
 
 export type TargetNode = {
@@ -53,7 +53,7 @@ export class TargetsTreeProvider
       const names = this.targets.map((target) => target.name);
       if (names.length > 0 && (!this.defaultTarget || !names.includes(this.defaultTarget))) {
         this.defaultTarget = names[0];
-        await setWorkspaceConfig("defaultTarget", this.defaultTarget);
+        await persistWorkspaceDefault("defaultTarget", this.defaultTarget);
       }
       this.onDidChangeTreeDataEmitter.fire(undefined);
     });
