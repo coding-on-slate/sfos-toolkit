@@ -480,7 +480,7 @@
     "build": "node esbuild.js",
     "watch": "node esbuild.js --watch",
     "lint": "tsc -p tsconfig.json --noEmit",
-    "package": "vsce package --out sfos-toolkit.vsix"
+    "package": "vsce package"
   },
   "devDependencies": {
     "@types/node": "^20.11.30",
